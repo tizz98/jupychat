@@ -1,16 +1,25 @@
 import pathlib
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from notebookgpt.auth import jwks_client
 from notebookgpt.routes import api, root
 
 static_directory = pathlib.Path(__file__).parent / "static"
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    jwks_client.fetch_data()
+    yield
+
+
 def build_app():
     app = FastAPI(
+        lifespan=lifespan,
         openapi_url="/openapi.json",
         servers=[{"url": "http://localhost:8000", "description": "Notebook GPT server"}],
     )

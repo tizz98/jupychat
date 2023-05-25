@@ -9,6 +9,11 @@ class Settings(BaseSettings):
     oauth_authorization_url: str = "http://localhost:8000/oauth/token"
     openai_verification_token: str = "unset"
 
+    jwks_url: str = "https://chatgpt-plugin-demo.us.auth0.com/.well-known/jwks.json"
+    jwks_cache_time_sec: int = 300
+
+    oauth_audience: str = "https://notebookgpt"
+
 
 @lru_cache()
 def get_settings():
