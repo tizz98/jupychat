@@ -28,3 +28,13 @@ def verify_jwt(token: str | None = Depends(optional_bearer_token)) -> dict:
         algorithms=["RS256"],
         audience=get_settings().oauth_audience,
     )
+
+
+def optional_verify_jwt(token: str | None = Depends(optional_bearer_token)) -> dict | None:
+    if not token:
+        return None
+    return verify_jwt(token)
+
+
+def get_user_is_authenticated(token: dict | None = Depends(optional_verify_jwt)) -> bool:
+    return token is not None

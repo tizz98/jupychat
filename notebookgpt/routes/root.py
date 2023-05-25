@@ -5,15 +5,18 @@ from fastapi import APIRouter, Depends
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 
+from notebookgpt.auth import get_user_is_authenticated
 from notebookgpt.settings import Settings, get_settings
 
 router = APIRouter()
-
 templates = Jinja2Templates(directory="notebookgpt/templates")
 
 
 @router.get("/.well-known/ai-plugin.json", include_in_schema=False)
-def get_ai_plugin_json(settings: Settings = Depends(get_settings)):
+def get_ai_plugin_json(
+    settings: Settings = Depends(get_settings),
+    user_is_authenticated: bool = Depends(get_user_is_authenticated),
+):
     template: Template = templates.get_template("ai-plugin.yaml")
     template_context = {
         "OPENAPI_URL": settings.openapi_url,
@@ -21,7 +24,7 @@ def get_ai_plugin_json(settings: Settings = Depends(get_settings)):
         "OAUTH_AUTHORIZATION_URL": settings.oauth_authorization_url,
         "OPENAI_VERIFICATION_TOKEN": settings.openai_verification_token,
         "LOGO_URL": settings.logo_url,
-        "user_is_authenticated": False,
+        "user_is_authenticated": user_is_authenticated,
     }
     rendered_template = template.render(**template_context)
     return yaml.safe_load(rendered_template)

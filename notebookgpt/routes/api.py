@@ -1,6 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Security
 
-router = APIRouter()
+from notebookgpt.auth import verify_jwt
+
+router = APIRouter(dependencies=[Security(verify_jwt)])
 
 
 @router.post("/run-cell")
