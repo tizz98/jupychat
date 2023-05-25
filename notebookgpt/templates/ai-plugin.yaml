@@ -1,0 +1,23 @@
+schema_version: v1
+name_for_human: NotebookGPT
+name_for_model: notebookgpt
+logo_url: # TODO
+contact_email: dev.tizz98@gmail.com
+legal_info_url: https://github.com/tizz98/notebookgpt/issues
+
+api:
+    type: openapi
+    url: {{ OPENAPI_URL }}
+    is_user_authenticated: {{ user_is_authenticated }}
+
+auth:
+    type: oauth
+    client_url: {{ OAUTH_CLIENT_URL }}
+    scope: offline_access openid email profile
+    authorization_url: {{ OAUTH_AUTHORIZATION_URL }}
+    authorization_content_type: application/json
+    verification_tokens:
+        openai: {{ OPENAI_VERIFICATION_TOKEN }}
+
+description_for_human: Allow ChatGPT to play with data in your running IPython kernel and Jupyter Notebook.
+description_for_model: Plugin for IPython/Jupyter Notebook. You can inspect variables and run code.

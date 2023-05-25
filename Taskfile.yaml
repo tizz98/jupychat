@@ -1,0 +1,62 @@
+version: "3"
+
+vars:
+  LINT_DIRS: "notebookgpt/"
+
+tasks:
+  serve:
+    deps:
+      - install-deps
+    cmds:
+      - uvicorn notebookgpt.main:app --reload --host "0.0.0.0" --port 8000
+
+  install-deps:
+    run: once
+    cmds:
+      - poetry install
+    sources:
+      - pyproject.yoml
+      - poetry.lock
+
+  format:black:
+    desc: Format code using black
+    cmds:
+      - task: install-deps
+      - poetry run black {{.LINT_DIRS}}
+
+  lint:black:
+    desc: Check to see if code matches black formatting
+    cmds:
+      - task: install-deps
+      - poetry run black --diff --check {{.LINT_DIRS}}
+
+  lint:ruff:
+    desc: Check to see if code matches ruff formatting
+    cmds:
+      - task: install-deps
+      - poetry run ruff check {{.LINT_DIRS}}
+
+  format:isort:
+    desc: Sort imports using isort
+    cmds:
+      - task: install-deps
+      - poetry run isort {{.LINT_DIRS}}
+
+  lint:isort:
+    desc: Check to see if imports are sorted using isort
+    cmds:
+      - task: install-deps
+      - poetry run isort --diff --check {{.LINT_DIRS}}
+
+  format:
+    desc: Format code using black and isort
+    cmds:
+      - task: format:isort
+      - task: format:black
+
+  lint:
+    desc: Run all linters
+    cmds:
+      - task: lint:ruff
+      - task: lint:black
+      - task: lint:isort

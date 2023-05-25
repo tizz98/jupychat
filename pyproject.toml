@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "notebookgpt"
+version = "0.1.0"
+description = "A simple ChatGPT plugin to run jupyter notebooks"
+authors = ["Elijah Wilson <dev.tizz98@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+httpx = "^0.24.1"
+fastapi = "^0.95.2"
+uvicorn = "^0.22.0"
+jinja2 = "^3.1.2"
+structlog = "^23.1.0"
+pyyaml = "^6.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+isort = "^5.12.0"
+ruff = "^0.0.270"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+line_length = 100
+profile = "black"
