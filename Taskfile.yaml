@@ -15,7 +15,7 @@ tasks:
     cmds:
       - poetry install
     sources:
-      - pyproject.yoml
+      - pyproject.yaml
       - poetry.lock
 
   format:black:

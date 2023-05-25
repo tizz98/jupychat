@@ -8,7 +8,7 @@ from notebookgpt.settings import Settings, get_settings
 router = APIRouter()
 
 
-@router.get("/authorize")
+@router.get("/authorize", include_in_schema=False)
 def authorize(
     client_id: str, redirect_uri: str, scope: str, settings: Settings = Depends(get_settings)
 ):
@@ -28,7 +28,7 @@ def authorize(
     )
 
 
-@router.post("/token")
+@router.post("/token", include_in_schema=False)
 async def token(request: Request, settings: Settings = Depends(get_settings)):
     body = await request.json()
     auth0_url = f"{settings.auth0_domain}/oauth/token"

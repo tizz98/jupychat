@@ -19,6 +19,8 @@ class Settings(BaseSettings):
 
     oauth_audience: str = "https://example.com/notebookgpt"
 
+    jupyter_connection_dir: str = "/tmp/notebookgpt_connection_files"
+
 
 @lru_cache()
 def get_settings():
