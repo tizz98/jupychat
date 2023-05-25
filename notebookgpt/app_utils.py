@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from notebookgpt.auth import jwks_client
 from notebookgpt.kernels import get_nb_gpt_kernel_client
 from notebookgpt.routes import api, auth, root
-from notebookgpt.settings import get_settings
+from notebookgpt.settings import DOMAIN, get_settings
 
 static_directory = pathlib.Path(__file__).parent / "static"
 
@@ -32,7 +32,7 @@ def build_app():
     app = FastAPI(
         lifespan=lifespan,
         openapi_url="/openapi.json",
-        servers=[{"url": "http://localhost:8000", "description": "Notebook GPT server"}],
+        servers=[{"url": DOMAIN, "description": "Notebook GPT server"}],
     )
 
     app.add_middleware(

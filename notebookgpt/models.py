@@ -2,7 +2,6 @@
 import base64
 from typing import Dict, List, Optional, Tuple
 
-from IPython import get_ipython
 from jupyter_client.kernelspec import NATIVE_KERNEL_NAME
 from pydantic import BaseModel, Field
 
@@ -36,10 +35,11 @@ class ImageData(BaseModel):
     url: str
 
 
-class ImageStore(BaseModel):
+class ImageStore:
     """An in-memory store for images that have been displayed in the notebook."""
 
-    image_store: Dict[str, ImageData] = {}
+    def __init__(self):
+        self.image_store: Dict[str, ImageData] = {}
 
     def store_images(self, dd: DisplayData) -> DisplayData:
         """Convert all image/png data to URLs that the frontend can fetch"""
@@ -69,10 +69,6 @@ image_store = ImageStore()
 class ErrorData(BaseModel):
     error: str
 
-    @classmethod
-    def from_exception(cls, e: Exception):
-        return cls(error=str(e) if str(e) else type(e).__name__)
-
 
 class RunCellResponse(BaseModel):
     """A bundle of outputs, stdout, stderr, and whether we succeeded or failed"""
@@ -84,32 +80,6 @@ class RunCellResponse(BaseModel):
     stderr: Optional[str] = ""
     displays: List[DisplayData] = []
     kernel_id: str
-
-    @classmethod
-    def from_result(cls, result, stdout, stderr, displays, kernel_id: str):
-        ip = get_ipython()
-        if ip is None:
-            return cls(success=False, error="Not running in IPython environment")
-
-        execute_result = DisplayData.from_tuple(ip.display_formatter.format(result))
-        displays = [DisplayData(data=d.data, metadata=d.metadata) for d in displays]
-
-        # Convert all image/png data to URLs that the frontend can fetch
-        displays = [image_store.store_images(d) for d in displays]
-        execute_result = image_store.store_images(execute_result)
-
-        return cls(
-            success=True,
-            execute_result=execute_result,
-            stdout=stdout,
-            stderr=stderr,
-            displays=displays,
-            kernel_id=kernel_id,
-        )
-
-    @classmethod
-    def from_error(cls, error, kernel_id: str):
-        return cls(success=False, error=f"Error executing code: {error}", kernel_id=kernel_id)
 
 
 class CreateFileRequest(BaseModel):

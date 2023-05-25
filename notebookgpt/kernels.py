@@ -99,7 +99,7 @@ class NotebookGPTOutputHandler(OutputHandler):
         if self.execute_result_data:
             formatted = ip.display_formatter.format(self.execute_result_data)
             execute_result = DisplayData.from_tuple(formatted)
-            image_store.store_images(execute_result)
+            execute_result = image_store.store_images(execute_result)
 
         displays = [DisplayData(data=data, metadata=metadata) for data, metadata in self.displays]
         displays = [image_store.store_images(d) for d in displays]
