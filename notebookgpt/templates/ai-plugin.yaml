@@ -1,7 +1,7 @@
 schema_version: v1
-name_for_human: NotebookGPT
-name_for_model: notebookgpt
-logo_url: # TODO
+name_for_human: NotebookGPT v2
+name_for_model: notebookgpt_v2
+logo_url: {{ LOGO_URL }}
 contact_email: dev.tizz98@gmail.com
 legal_info_url: https://github.com/tizz98/notebookgpt/issues
 

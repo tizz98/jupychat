@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from notebookgpt.auth import jwks_client
-from notebookgpt.routes import api, root
+from notebookgpt.routes import api, auth, root
 
 static_directory = pathlib.Path(__file__).parent / "static"
 
@@ -36,5 +36,6 @@ def build_app():
 
     app.include_router(root.router)
     app.include_router(api.router, prefix="/api")
+    app.include_router(auth.router, prefix="/oauth")
 
     return app

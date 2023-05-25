@@ -20,6 +20,7 @@ def get_ai_plugin_json(settings: Settings = Depends(get_settings)):
         "OAUTH_CLIENT_URL": settings.oauth_client_url,
         "OAUTH_AUTHORIZATION_URL": settings.oauth_authorization_url,
         "OPENAI_VERIFICATION_TOKEN": settings.openai_verification_token,
+        "LOGO_URL": settings.logo_url,
         "user_is_authenticated": False,
     }
     rendered_template = template.render(**template_context)
