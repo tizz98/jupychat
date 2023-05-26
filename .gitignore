@@ -171,3 +171,4 @@ poetry.toml
 pyrightconfig.json
 
 .task/
+.confirmed-allow-chatgpt-to-run-code-on-my-computer

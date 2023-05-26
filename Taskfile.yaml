@@ -5,9 +5,28 @@ vars:
 
 tasks:
   serve:
+    interactive: true
+    silent: true
     deps:
       - install-deps
     cmds:
+      - |
+        FILE=".confirmed-allow-chatgpt-to-run-code-on-my-computer"
+
+        if [ -f "$FILE" ]; then
+            exit 0
+        fi
+
+        echo "Are you sure you want to proceed? This will allow ChatGPT to execute code on your computer. (y/N)"
+        read -r REPLY
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
+            # if 'Y' or 'y' was entered, the condition is true
+            touch $FILE
+        else
+            echo "Exiting..."
+            exit 1
+        fi
       - poetry run uvicorn jupychat.main:app --reload --host "0.0.0.0" --port 8000
 
   install-deps:
