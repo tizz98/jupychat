@@ -1,11 +1,8 @@
 """Taken from https://github.com/rgbkrk/dangermode/blob/main/dangermode/models.py"""
-import base64
-from typing import Dict, List, Optional, Tuple
+from typing import List, Optional, Tuple
 
 from jupyter_client.kernelspec import NATIVE_KERNEL_NAME
 from pydantic import BaseModel, Field
-
-from jupychat.settings import get_settings
 
 
 class RunCellRequest(BaseModel):
@@ -33,37 +30,6 @@ class ImageData(BaseModel):
 
     data: bytes
     url: str
-
-
-class ImageStore:
-    """An in-memory store for images that have been displayed in the notebook."""
-
-    def __init__(self):
-        self.image_store: Dict[str, ImageData] = {}
-
-    def store_images(self, dd: DisplayData) -> DisplayData:
-        """Convert all image/png data to URLs that the frontend can fetch"""
-
-        if dd.data and "image/png" in dd.data:
-            image_name = f"image-{len(self.image_store)}.png"
-            image_data = base64.b64decode(dd.data["image/png"])
-
-            self.image_store[image_name] = ImageData(
-                data=image_data, url=f"{get_settings().domain}/images/{image_name}"
-            )
-            dd.data["image/png"] = self.image_store[image_name].url
-
-        return dd
-
-    def get_image(self, image_name: str) -> bytes:
-        return self.image_store[image_name].data
-
-    def clear(self):
-        self.image_store = {}
-
-
-# Initialize the image store as a global instance
-image_store = ImageStore()
 
 
 class ErrorData(BaseModel):

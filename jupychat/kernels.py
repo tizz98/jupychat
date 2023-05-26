@@ -11,13 +11,13 @@ from kernel_sidecar.handlers.output import ContentType, OutputHandler
 from kernel_sidecar.models import messages
 from kernel_sidecar.models.messages import CellStatus, StreamChannel
 
+from jupychat.images import image_store
 from jupychat.models import (
     CreateKernelRequest,
     CreateKernelResponse,
     DisplayData,
     RunCellRequest,
     RunCellResponse,
-    image_store,
 )
 from jupychat.settings import get_settings
 

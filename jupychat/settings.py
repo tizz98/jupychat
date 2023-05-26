@@ -8,7 +8,7 @@ class Settings(BaseSettings):
 
     @property
     def logo_url(self):
-        return f"{self.domain}/static/images/logo.png"
+        return f"{self.domain}/static/images/logo3.png"
 
     @property
     def openapi_url(self):
