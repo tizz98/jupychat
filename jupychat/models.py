@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Tuple
 from jupyter_client.kernelspec import NATIVE_KERNEL_NAME
 from pydantic import BaseModel, Field
 
-from jupychat.settings import DOMAIN
+from jupychat.settings import get_settings
 
 
 class RunCellRequest(BaseModel):
@@ -49,7 +49,7 @@ class ImageStore:
             image_data = base64.b64decode(dd.data["image/png"])
 
             self.image_store[image_name] = ImageData(
-                data=image_data, url=f"{DOMAIN}/images/{image_name}"
+                data=image_data, url=f"{get_settings().domain}/images/{image_name}"
             )
             dd.data["image/png"] = self.image_store[image_name].url
 

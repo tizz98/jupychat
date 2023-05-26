@@ -21,6 +21,7 @@ ipython = "^8.13.2"
 kernel-sidecar = "^0.5.5"
 cryptography = "^40.0.2"
 ipykernel = "^6.23.1"
+pydantic = {extras = ["dotenv"], version = "^1.10.8"}
 
 
 [tool.poetry.group.dev.dependencies]

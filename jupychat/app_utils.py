@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from jupychat.auth import jwks_client
 from jupychat.kernels import get_nb_gpt_kernel_client
 from jupychat.routes import api, auth, root
-from jupychat.settings import DOMAIN, get_settings
+from jupychat.settings import get_settings
 
 static_directory = pathlib.Path(__file__).parent / "static"
 
@@ -29,10 +29,12 @@ async def lifespan(app: FastAPI):
 
 
 def build_app():
+    settings = get_settings()
+
     app = FastAPI(
         lifespan=lifespan,
         openapi_url="/openapi.json",
-        servers=[{"url": DOMAIN, "description": "Notebook GPT server"}],
+        servers=[{"url": settings.domain, "description": "Notebook GPT server"}],
     )
 
     app.add_middleware(

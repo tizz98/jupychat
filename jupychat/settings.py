@@ -1,25 +1,39 @@
-import os
 from functools import lru_cache
 
 from pydantic import BaseSettings
 
-DOMAIN = os.environ.get("JUPYCHAT_DOMAIN", "http://localhost:8000")
-
 
 class Settings(BaseSettings):
-    logo_url: str = f"{DOMAIN}/static/images/logo.png"
-    openapi_url: str = f"{DOMAIN}/openapi.json"
-    oauth_client_url: str = f"{DOMAIN}/oauth/authorize"
-    oauth_authorization_url: str = f"{DOMAIN}/oauth/token"
+    domain: str = "http://localhost:8000"
+
+    @property
+    def logo_url(self):
+        return f"{self.domain}/static/images/logo.png"
+
+    @property
+    def openapi_url(self):
+        return f"{self.domain}/openapi.json"
+
+    @property
+    def oauth_client_url(self):
+        return f"{self.domain}/oauth/authorize"
+
+    @property
+    def oauth_authorization_url(self):
+        return f"{self.domain}/oauth/token"
+
     openai_verification_token: str = "unset"
 
-    auth0_domain: str = "https://chatgpt-plugin-demo.us.auth0.com"
-    jwks_url: str = "https://chatgpt-plugin-demo.us.auth0.com/.well-known/jwks.json"
+    auth0_domain: str
+    jwks_url: str
     jwks_cache_time_sec: int = 300
 
     oauth_audience: str = "https://example.com/jupychat"
 
     jupyter_connection_dir: str = "/tmp/jupychat_connection_files"
+
+    class Config:
+        env_file = ".env"
 
 
 @lru_cache()
