@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException, Security
 
-from notebookgpt.auth import verify_jwt
-from notebookgpt.kernels import NotebookGPTKernelClient, get_nb_gpt_kernel_client
-from notebookgpt.models import (
+from jupychat.auth import verify_jwt
+from jupychat.kernels import JupyChatKernelClient, get_nb_gpt_kernel_client
+from jupychat.models import (
     CreateKernelRequest,
     CreateKernelResponse,
     RunCellRequest,
     RunCellResponse,
 )
-from notebookgpt.suggestions import RUN_CELL_PARSE_FAIL
+from jupychat.suggestions import RUN_CELL_PARSE_FAIL
 
 router = APIRouter(dependencies=[Security(verify_jwt)])
 
@@ -16,7 +16,7 @@ router = APIRouter(dependencies=[Security(verify_jwt)])
 @router.post("/kernels")
 async def create_kernel(
     request: CreateKernelRequest,
-    kernel_client: NotebookGPTKernelClient = Depends(get_nb_gpt_kernel_client),
+    kernel_client: JupyChatKernelClient = Depends(get_nb_gpt_kernel_client),
 ) -> CreateKernelResponse:
     """Create and start kernel with the given kernel name."""
     return await kernel_client.start_kernel(request)
@@ -25,7 +25,7 @@ async def create_kernel(
 @router.post("/run-cell")
 async def run_cell(
     request: RunCellRequest,
-    kernel_client: NotebookGPTKernelClient = Depends(get_nb_gpt_kernel_client),
+    kernel_client: JupyChatKernelClient = Depends(get_nb_gpt_kernel_client),
 ) -> RunCellResponse:
     """Execute a cell and return the result.
 

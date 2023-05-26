@@ -3,7 +3,7 @@ from urllib.parse import quote, urlencode
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
-from notebookgpt.settings import Settings, get_settings
+from jupychat.settings import Settings, get_settings
 
 router = APIRouter()
 

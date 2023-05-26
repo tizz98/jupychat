@@ -6,10 +6,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from notebookgpt.auth import jwks_client
-from notebookgpt.kernels import get_nb_gpt_kernel_client
-from notebookgpt.routes import api, auth, root
-from notebookgpt.settings import DOMAIN, get_settings
+from jupychat.auth import jwks_client
+from jupychat.kernels import get_nb_gpt_kernel_client
+from jupychat.routes import api, auth, root
+from jupychat.settings import DOMAIN, get_settings
 
 static_directory = pathlib.Path(__file__).parent / "static"
 

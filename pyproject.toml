@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "notebookgpt"
+name = "jupychat"
 version = "0.1.0"
 description = "A simple ChatGPT plugin to run jupyter notebooks"
 authors = ["Elijah Wilson <dev.tizz98@gmail.com>"]

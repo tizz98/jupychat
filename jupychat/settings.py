@@ -3,7 +3,7 @@ from functools import lru_cache
 
 from pydantic import BaseSettings
 
-DOMAIN = os.environ.get("NOTEBOOKGPT_DOMAIN", "http://localhost:8000")
+DOMAIN = os.environ.get("JUPYCHAT_DOMAIN", "http://localhost:8000")
 
 
 class Settings(BaseSettings):
@@ -17,9 +17,9 @@ class Settings(BaseSettings):
     jwks_url: str = "https://chatgpt-plugin-demo.us.auth0.com/.well-known/jwks.json"
     jwks_cache_time_sec: int = 300
 
-    oauth_audience: str = "https://example.com/notebookgpt"
+    oauth_audience: str = "https://example.com/jupychat"
 
-    jupyter_connection_dir: str = "/tmp/notebookgpt_connection_files"
+    jupyter_connection_dir: str = "/tmp/jupychat_connection_files"
 
 
 @lru_cache()

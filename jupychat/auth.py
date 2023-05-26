@@ -4,7 +4,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import PyJWKClient
 from starlette import status
 
-from notebookgpt.settings import get_settings
+from jupychat.settings import get_settings
 
 jwks_client = PyJWKClient(get_settings().jwks_url, cache_keys=True)
 bearer_scheme = HTTPBearer(auto_error=False)

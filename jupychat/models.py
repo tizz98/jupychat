@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Tuple
 from jupyter_client.kernelspec import NATIVE_KERNEL_NAME
 from pydantic import BaseModel, Field
 
-from notebookgpt.settings import DOMAIN
+from jupychat.settings import DOMAIN
 
 
 class RunCellRequest(BaseModel):

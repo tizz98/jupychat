@@ -1,9 +1,9 @@
 schema_version: v1
-name_for_human: NotebookGPT v2
-name_for_model: notebookgpt_v2
+name_for_human: JupyChat
+name_for_model: jupychat
 logo_url: {{ LOGO_URL }}
 contact_email: dev.tizz98@gmail.com
-legal_info_url: https://github.com/tizz98/notebookgpt/issues
+legal_info_url: https://github.com/tizz98/chatgpt-notebook-plugin/issues
 
 api:
     type: openapi

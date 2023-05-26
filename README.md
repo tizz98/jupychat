@@ -9,3 +9,5 @@ https://noteable.io/chatgpt-plugin-for-notebook/.
 
 This is heavily inspired by [dangermode](https://github.com/rgbkrk/dangermode).
 It could have been a fork, but the code is small enough that I started from scratch.
+
+![example](.github/assets/example.png)

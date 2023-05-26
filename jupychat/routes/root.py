@@ -6,12 +6,12 @@ from fastapi.responses import PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 
-from notebookgpt.auth import get_user_is_authenticated
-from notebookgpt.models import image_store
-from notebookgpt.settings import Settings, get_settings
+from jupychat.auth import get_user_is_authenticated
+from jupychat.models import image_store
+from jupychat.settings import Settings, get_settings
 
 router = APIRouter()
-templates = Jinja2Templates(directory="notebookgpt/templates")
+templates = Jinja2Templates(directory="jupychat/templates")
 
 
 @router.get("/.well-known/ai-plugin.json", include_in_schema=False)

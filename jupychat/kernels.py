@@ -11,7 +11,7 @@ from kernel_sidecar.handlers.output import ContentType, OutputHandler
 from kernel_sidecar.models import messages
 from kernel_sidecar.models.messages import CellStatus, StreamChannel
 
-from notebookgpt.models import (
+from jupychat.models import (
     CreateKernelRequest,
     CreateKernelResponse,
     DisplayData,
@@ -19,7 +19,7 @@ from notebookgpt.models import (
     RunCellResponse,
     image_store,
 )
-from notebookgpt.settings import get_settings
+from jupychat.settings import get_settings
 
 logger = structlog.get_logger(__name__)
 
@@ -31,7 +31,7 @@ def safe_get_ipython():
     return InteractiveShellEmbed()
 
 
-class NotebookGPTKernelClient:
+class JupyChatKernelClient:
     """Client class for managing jupyter kernels.
 
     This wraps the jupyter multi kernel manager and provides a simple
@@ -52,7 +52,7 @@ class NotebookGPTKernelClient:
 
     async def run_cell(self, request: RunCellRequest) -> RunCellResponse:
         sidecar_client = self._sidecar_clients[request.kernel_id]
-        output_handler = NotebookGPTOutputHandler(sidecar_client, uuid.uuid4().hex)
+        output_handler = JupyChatOutputHandler(sidecar_client, uuid.uuid4().hex)
         status_handler = StatusHandler()
         await sidecar_client.execute_request(
             request.code, handlers=[output_handler, status_handler]
@@ -66,7 +66,7 @@ class NotebookGPTKernelClient:
             logger.info("Shut down kernel", kernel_id=kernel_id)
 
 
-class NotebookGPTOutputHandler(OutputHandler):
+class JupyChatOutputHandler(OutputHandler):
     def __init__(self, client: KernelSidecarClient, cell_id: str):
         super().__init__(client, cell_id)
 
@@ -125,7 +125,7 @@ class StatusHandler(Handler):
 
 
 @lru_cache(maxsize=1)
-def get_nb_gpt_kernel_client() -> NotebookGPTKernelClient:
+def get_nb_gpt_kernel_client() -> JupyChatKernelClient:
     settings = get_settings()
     mkm = AsyncMultiKernelManager(connection_dir=settings.jupyter_connection_dir)
-    return NotebookGPTKernelClient(mkm)
+    return JupyChatKernelClient(mkm)

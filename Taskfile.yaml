@@ -1,14 +1,14 @@
 version: "3"
 
 vars:
-  LINT_DIRS: "notebookgpt/"
+  LINT_DIRS: "jupychat/"
 
 tasks:
   serve:
     deps:
       - install-deps
     cmds:
-      - poetry run uvicorn notebookgpt.main:app --reload --host "0.0.0.0" --port 8000
+      - poetry run uvicorn jupychat.main:app --reload --host "0.0.0.0" --port 8000
 
   install-deps:
     run: once
