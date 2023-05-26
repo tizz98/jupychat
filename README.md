@@ -1,4 +1,4 @@
-# NotebookGPT
+# Jupyter Notebook ChatGPT Plugin
 
 A simple ChatGPT plugin for executing Jupyter notebooks. This demonstrates a
 working ChatGPT plugin with OAuth support using Auth0.
