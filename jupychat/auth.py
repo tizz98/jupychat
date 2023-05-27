@@ -17,6 +17,25 @@ async def optional_bearer_token(
 
 
 def verify_jwt(token: str | None = Depends(optional_bearer_token)) -> dict:
+    """
+    Verifies the given JWT token and returns the decoded payload.
+
+    Parameters
+    ----------
+    token : str or None, optional
+        The JWT token to verify, by default Depends(optional_bearer_token)
+
+    Returns
+    -------
+    dict
+        The decoded payload of the JWT token.
+
+    Raises
+    ------
+    HTTPException
+        If the token is missing or invalid.
+
+    """
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing Authorization bearer token"

@@ -1,3 +1,11 @@
+"""
+This module contains the client classes for managing Jupyter kernels.
+
+Classes:
+- JupyChatKernelClient: A client class for managing Jupyter kernels.
+- JupyChatOutputHandler: A custom output handler for Jupyter kernels that formats the output for use in JupyChat.
+- StatusHandler: A custom status handler for Jupyter kernels that tracks the status of cell execution.
+"""
 import uuid
 from functools import lru_cache
 
@@ -43,6 +51,24 @@ class JupyChatKernelClient:
         self._sidecar_clients: dict[str, KernelSidecarClient] = {}
 
     async def start_kernel(self, request: CreateKernelRequest) -> CreateKernelResponse:
+        """
+        Starts a new kernel with the given arguments and returns its ID.
+
+        Parameters
+        ----------
+        request : CreateKernelRequest
+            A `CreateKernelRequest` object containing the arguments for starting the kernel.
+
+        Returns
+        -------
+        CreateKernelResponse
+            A `CreateKernelResponse` object containing the ID of the newly created kernel.
+
+        Raises
+        ------
+        Any exceptions raised by the `start_kernel` method of the `MultiKernelManager` object.
+
+        """
         kernel_id = await self._mkm.start_kernel(**request.start_kernel_kwargs)
         logger.info("Started kernel", kernel_id=kernel_id)
         connection_info = self._mkm.get_connection_info(kernel_id)
@@ -51,6 +77,25 @@ class JupyChatKernelClient:
         return CreateKernelResponse(kernel_id=kernel_id)
 
     async def run_cell(self, request: RunCellRequest) -> RunCellResponse:
+        """
+        Executes the given code in the kernel associated with the given ID and returns the output.
+
+        Parameters
+        ----------
+        request : RunCellRequest
+            A `RunCellRequest` object containing the code to execute and the ID of the kernel to use.
+
+        Returns
+        -------
+        RunCellResponse
+            A `RunCellResponse` object containing the output of the executed code.
+
+        Raises
+        ------
+        Any exceptions raised by the `execute_request` method of the `KernelSidecarClient` object.
+
+        """
+
         sidecar_client = self._sidecar_clients[request.kernel_id]
         output_handler = JupyChatOutputHandler(sidecar_client, uuid.uuid4().hex)
         status_handler = StatusHandler()
@@ -60,6 +105,15 @@ class JupyChatKernelClient:
         return output_handler.to_response(status_handler, request.kernel_id)
 
     async def shutdown_all(self) -> None:
+        """
+        Shuts down all running kernels and their associated sidecar clients.
+
+        Raises
+        ------
+        Any exceptions raised by the `__aexit__` method of the `KernelSidecarClient` object or the `shutdown_kernel` method
+        of the `MultiKernelManager` object.
+
+        """
         for kernel_id, sidecar_client in self._sidecar_clients.items():
             await sidecar_client.__aexit__(None, None, None)
             await self._mkm.shutdown_kernel(kernel_id, now=True)
@@ -76,7 +130,21 @@ class JupyChatOutputHandler(OutputHandler):
         self.execute_result_data = None
         self.error_in_exec = None
 
-    async def add_cell_content(self, content: ContentType):
+    async def add_cell_content(self, content: ContentType) -> None:
+        """
+        Adds the given content to the output of the cell.
+
+        Parameters
+        ----------
+        content : ContentType
+            The content to add to the output of the cell.
+
+        Returns
+        -------
+        None
+
+        """
+
         match type(content):
             case messages.StreamContent:
                 if content.name == StreamChannel.stdout:
@@ -93,6 +161,22 @@ class JupyChatOutputHandler(OutputHandler):
                 logger.warning("Unknown content type", content=content)
 
     def to_response(self, status: "StatusHandler", kernel_id: str) -> RunCellResponse:
+        """
+        Converts the output of the cell to a `RunCellResponse` object.
+
+        Parameters
+        ----------
+        status : StatusHandler
+            The `StatusHandler` object containing the status of the executed cell.
+        kernel_id : str
+            The ID of the kernel that executed the cell.
+
+        Returns
+        -------
+        RunCellResponse
+            A `RunCellResponse` object containing the output of the executed cell.
+
+        """
         ip = safe_get_ipython()
 
         execute_result = None
