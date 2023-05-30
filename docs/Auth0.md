@@ -26,3 +26,11 @@
 2. Select the "Client ID" and "Client Secret"
 
 ![creds](images/auth0_creds.png)
+
+## Create an API
+
+1. Go to your [Auth0 Dashboard](https://manage.auth0.com/dashboard/) and click "APIs" in the left sidebar.
+2. Click "Create API"
+3. Use `https://example.com/jupychat` as the identifier and audience
+
+![create api](images/auth0_create_api.png)
