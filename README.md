@@ -16,12 +16,13 @@ It could have been a fork, but the code is small enough that I started from scra
 
 ### Pre-requisites
 
-1. Auth0 Account Created
-2. Auth0 Application Created
+1. [Auth0 Account Created](docs/Auth0.md#create-an-auth0-account)
+2. [Auth0 Application Created](docs/Auth0.md#create-an-auth0-application)
 3. Auth0 API Created (use `https://example.com/jupychat` as the identifier and audience)
 4. Python 3.11+ installed
 5. [Poetry](https://python-poetry.org/) installed
 6. [Task](https://taskfile.dev/) installed
+7. [ngrok](https://ngrok.com) installed
 
 ### Run the FastAPI server
 
