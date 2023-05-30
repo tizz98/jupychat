@@ -12,6 +12,27 @@ router = APIRouter()
 def authorize(
     client_id: str, redirect_uri: str, scope: str, settings: Settings = Depends(get_settings)
 ):
+    """
+    Redirects the user to the Auth0 authorization page with the given query parameters.
+
+    Parameters
+    ----------
+    client_id : str
+        The client ID of the application.
+    redirect_uri : str
+        The URI to redirect to after the user has authorized the application.
+    scope : str
+        The scopes to request from the user.
+    settings : Settings, optional
+        The application settings, by default Depends(get_settings)
+
+    Returns
+    -------
+    Response
+        A `Response` object with a 302 status code and a `Location` header pointing to the Auth0 authorization page.
+
+    """
+
     # Redirect with the correct query parameters
     auth0_args = {
         "response_type": "code",
@@ -30,6 +51,23 @@ def authorize(
 
 @router.post("/token", include_in_schema=False)
 async def token(request: Request, settings: Settings = Depends(get_settings)):
+    """
+    Retrieves an access token from Auth0 using the provided credentials.
+
+    Parameters
+    ----------
+    request : Request
+        The incoming HTTP request.
+    settings : Settings, optional
+        The application settings, by default Depends(get_settings)
+
+    Returns
+    -------
+    Union[Dict[str, Any], HTTPException]
+        A dictionary containing the access token and other information if the request was successful, or an
+        `HTTPException` if the request failed.
+
+    """
     body = await request.json()
     auth0_url = f"{settings.auth0_domain}/oauth/token"
 
