@@ -34,7 +34,7 @@ def build_app():
     app = FastAPI(
         lifespan=lifespan,
         openapi_url="/openapi.json",
-        servers=[{"url": settings.domain, "description": "Notebook GPT server"}],
+        servers=[{"url": settings.domain, "description": "JupyChat server"}],
     )
 
     app.add_middleware(
